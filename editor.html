@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <style type="text/css">
+        .selected.annotated-marker > rect {
+          fill: green !important;
+        }
+        .selected.annotated-marker > line {
+          stroke: green !important;
+        }
+      </style>
+  </head>
+  <body>
+    <div id="track"></div>
+
+    <script type="text/javascript" src="utils.js"></script>
+    <script type="text/javascript" src="beat-grid-interactions.js"></script>
+    <script type="text/javascript" src="beat-grid-editor.js"></script>
+    <script type="text/javascript" src="waves-ui.min.js"></script>
+    <script type="text/javascript">
+
+      function randomColor(alpha) {
+          var R = ~~(Math.random() * 255);
+          var G = ~~(Math.random() * 255);
+          var B = ~~(Math.random() * 255);
+          return 'rgba(' + [ R, G, B, alpha || 1 ] + ')';
+      }
+
+      var beatsSrc2 = "07.%20Around%20The%20World.json";
+      var audioSrc2 = "07.%20Around%20The%20World.mp3";
+      var audioCtx = new AudioContext();
+      var editor = new BeatGridEditor(document.getElementById('track'), 60, 20, audioCtx);
+      var _beatsData;
+      var _audioBuffer;
+      load_audio_data(audioCtx, audioSrc2, beatsSrc2, function(audioBuffer, beatsData) {
+        _beatsData = beatsData;
+        _audioBuffer = audioBuffer;
+        for (var i=0; i<beatsData.length; i++) {
+          beatsData[i] = beatsData[i][0];
+        }
+        editor.load_audio_buffer(audioBuffer.getChannelData(0), audioBuffer.getChannelData(1), audioBuffer.length, audioBuffer.sampleRate);
+        // editor.set_beat_grid(beatsData);
+      });
+      
+
+    </script>
+    
+  </body>
+</html>
