@@ -17,9 +17,9 @@
     <div id="track"></div>
 
     <script type="text/javascript" src="utils.js"></script>
-    <script type="text/javascript" src="beat-grid-interactions.js"></script>
-    <script type="text/javascript" src="beat-grid-editor.js"></script>
-    <script type="text/javascript" src="waves-ui.min.js"></script>
+    <script type="text/javascript" src="./new/beat-grid-editor.es6.js"></script>
+    <script type="text/javascript" src="http://localhost/beat-grid.js/beat-grid.es6.js"></script>
+    <script type="text/javascript" src="http://localhost/wavesjs-konva-ui/waves-ui.umd.js"></script>
     <script type="text/javascript">
 
       function randomColor(alpha) {
@@ -32,7 +32,7 @@
       var beatsSrc2 = "07.%20Around%20The%20World.json";
       var audioSrc2 = "07.%20Around%20The%20World.mp3";
       var audioCtx = new AudioContext();
-      var editor = new BeatGridEditor(document.getElementById('track'), 60, 20, audioCtx);
+      var editor = new BeatGridEditor({ $el: document.getElementById('track') }, { bufferSize: 4096, audioCtx: audioCtx });
       var _beatsData;
       var _audioBuffer;
       load_audio_data(audioCtx, audioSrc2, beatsSrc2, function(audioBuffer, beatsData) {
@@ -41,8 +41,8 @@
         for (var i=0; i<beatsData.length; i++) {
           beatsData[i] = beatsData[i][0];
         }
-        editor.load_audio_buffer(audioBuffer.getChannelData(0), audioBuffer.getChannelData(1), audioBuffer.length, audioBuffer.sampleRate);
-        // editor.set_beat_grid(beatsData);
+        editor.audioBuffer = audioBuffer;
+        editor.beatGrid = beatsData;
       });
       
 
